@@ -1,20 +1,14 @@
-# Game
+# Resistance Card Game
 
-**TODO: Add description**
+Using distributed elixir to play the resistance card game.
 
-## Installation
+## How to run the server
+  
+  $ mix deps.get
+  $ iex -S mix --name main@#{server ip address} --cookie #{share a common cookie}
+  iex> Game.init
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed as:
+## How to run the client
 
-  1. Add game to your list of dependencies in `mix.exs`:
-
-        def deps do
-          [{:game, "~> 0.0.1"}]
-        end
-
-  2. Ensure game is started before your application:
-
-        def application do
-          [applications: [:game]]
-        end
+  $ iex -S mix --name #{your name}@#{your ip address} --cookie #{same cookie as server}
 
