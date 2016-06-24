@@ -17,9 +17,13 @@ defmodule Client do
 
   def main_pid, do: :global.whereis_name(:main)
 
+  defp main_node do
+    :"main@#{Application.get_env(:resistance, :main_server_ip)}"
+  end
+
   defp do_connect(name, false, :undefined) do
     IO.puts "Connecting to node"
-    do_connect name, Node.connect(:"main@10.3.17.68"), :undefined
+    do_connect name, Node.connect(main_node), :undefined
   end
 
   defp do_connect(name, true, :undefined) do
