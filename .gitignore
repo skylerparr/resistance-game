@@ -1,6 +1,8 @@
-/_build
-/cover
-/deps
-erl_crash.dump
 *.ez
+*.iml
 *.swp
+.idea/
+_build/
+cover/
+deps/
+erl_crash.dump
