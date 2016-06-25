@@ -2,33 +2,25 @@ defmodule ClientConnect do
   import PidHelper
   import Logger
 
-  def connect(name) when is_atom(name) do
+  def connect(player_name) when is_atom(player_name) do
     debug "Starting up..."
-    #connect_to_main_node
-
+    if connect_to_main_node do
+      join_game(player_name)
+    else
+      {:error, "connection to main node failed"}
+    end
   end
 
   def connect_to_main_node do
     debug "Connecting to node"
-    if !Node.connect(main_node) do
-      connect_to_main_node
-    end
+    Node.connect(main_node)
   end
 
-  def connect_to_main_node(name, false) do
-    #connect_to_main_node name
+  def join_game(player_name) when is_atom(player_name) do
+    attempt_join(player_name)
   end
 
-  def connect_to_main_node(name, true) do
-    :ok
-  end
-
-  defp do_connect(name, true, :undefined) do
-    debug "Finding main name"
-    do_connect name, true, main_pid
-  end
-
-  defp do_connect(name, true, main) do
+  defp attempt_join(name, main \\ main_pid) do
     debug "Sending connect to main"
     send main, {:connect, name, self}
     :ok
