@@ -17,10 +17,15 @@ defmodule ClientConnect do
   end
 
   def join_game(player_name) when is_atom(player_name) do
-    attempt_join(player_name)
+    attempt_join(player_name, :undefined)
   end
 
-  defp attempt_join(name, main \\ main_pid) do
+  defp attempt_join(name, :undefined) do
+    debug "Finding main name"
+    attempt_join name, main_pid
+  end
+
+  defp attempt_join(name, main) do
     debug "Sending connect to main"
     send main, {:connect, name, self}
     :ok
