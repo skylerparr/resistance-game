@@ -5,12 +5,8 @@ defmodule Game do
   def init do
     :global.register_name(:main, self)
 
-    players = wait_connect(%{})
-    Enum.each(players, fn({name, pid}) ->
-      :global.register_name(name, pid)
-    end)
-
-    players 
+    wait_connect(%{})
+      |> register_player_pids
       |> assign_roles
       |> distribute_roles
       |> GameLoop.play_game
@@ -28,6 +24,14 @@ defmodule Game do
     IO.inspect map_size(players)
 
     wait_connect(players)
+  end
+
+  defp register_player_pids(players) do
+    Enum.each(players, fn({name, pid}) ->
+      :global.register_name(name, pid)
+    end)
+
+    players
   end
 
   defp assign_roles(players) do
@@ -48,8 +52,4 @@ defmodule Game do
     player_roles
   end
 
-  defp persist_players(player_roles) do
-    {:ok, pid} = Agent.start_link(fn() -> player_roles end, name: __MODULE__)
-    Process.register(pid, :player_roles)
-  end
 end
